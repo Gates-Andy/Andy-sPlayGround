@@ -10,10 +10,21 @@ public class UserController {
 	@GetMapping("/join/view")
 	public String joinInput() {
 		return "user/join";
+	}  //post
+	
+	@GetMapping("/duplicate-id")
+	public String duplicateIdInput() {
+		return "user/duplicate";
 	}
 	
 	@GetMapping("/login/view")
 	public String loginInput() {
 		return "user/login";
-	}
+	}  //post
+	
+	@GetMapping("/post/create")
+	public String createTimeline() {
+		return "user/timeline";
+	}  //post
+	
 }
