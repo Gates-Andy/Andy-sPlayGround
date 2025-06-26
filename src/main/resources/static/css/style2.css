@@ -2,7 +2,6 @@
 
 #wrap{
 	width:1200px;
-	height:800px;
 	margin: 0 auto;
 }
 
@@ -10,9 +9,17 @@ header{
 	height:200px;
 }
 
+logo-area
+logout-area
+
 section{
 	height:600px;
 }
+
+main
+title-area
+content
+contents-area
 
 footer{
 	height:200px;
