@@ -12,7 +12,7 @@
 	</div>
 
 	<div class="userbox ml-5">
-	
+
 		<header class="text-center">
 			<h3 class="">ANDY's PLAYGROUND</h3>
 			<br>
@@ -20,29 +20,38 @@
 		</header>
 
 		<section class="contents text-center">
+			
+			<div class="mb-3">
+  				<label class="form-label">Login ID</label>
+  				<input type="text" class="form-control" id="loginIdInput" placeholder="Enter your login ID">
+  				<button type="button" class="btn btn-outline-primary form-control mt-2" id="duplicateBtn">Check Availability</button>
+ 				<div id="duplicateText" class="text-danger mt-1 d-none">❌ This ID is already taken.</div>
+ 				<div id="availableText" class="text-success mt-1 d-none">✅ This ID is available.</div>
+			</div>
+			
 			<div>Email address</div>
-			<input type="text" id="emailInput" placeholder="emailaddress">
+			<input type="text" class="form-control" id="emailInput" placeholder="emailaddress">
 
 			<div>password</div>
-			<input type="password" id="passwordInput" placeholder="password">
+			<input type="password" class="form-control" id="passwordInput" placeholder="password">
 
 			<div>name</div>
-			<input type="text" id="nameInput" placeholder="name">
+			<input type="text" class="form-control" id="nameInput" placeholder="name">
 
-			<div>username</div>
-			<input type="text" id="usernameInput" placeholder="username">
 
 			<div>
 				Someone using our service may have uploaded<br> your contact
 				information to ANDY’s PlayGround.<br> Learn more
 			</div>
 
-			<button type="button" class="btn btn-danger mt-3" id="joinBtn">Join now</button>
+			<button type="button" class="btn btn-danger mt-3" id="joinBtn">Join
+				now</button>
 
-			<h5>Do you have an acccount?</h5><br>
-			
+			<h5>Do you have an acccount?</h5>
+			<br>
+
 			<h5>Download the app here</h5>
-			
+
 			<div class="d-flex">
 				<img class="playstore"> <img class="appstore">
 			</div>
@@ -54,61 +63,89 @@
 </div>
 
 <script layout:fragment="script">
+	var checkDuplicate = false
+	
+	var isDuplicateloginId = true;
+	
+	$("#duplicateBtn").on("click", function() {
+
+		let loginId = $("#loginIdInput").val();
+		
+		if (loginId === "") {
+			alert("Please Check your loginId");
+			return;
+		}
+		
+		$.ajax({
+			type : "get",
+			url : "/user/duplicate-id",
+			data : {
+				"loginId" : loginId
+			},
+			
+			success : function(response) {
+				checkDuplicate = true;
+				isDuplicateloginId = response.isDuplicate;
+
+				if (response.isDuplicate) {
+
+					$("#duplicateText").removeClass("d-none");
+					$("#availableText").addClass("d-none");
+				} else {
+
+					$("#availableText").removeClass("d-none");
+					$("#duplicateText").addClass("d-none");
+				}
+			},
+			
+			error : function() {
+				alert("Errors ocuurs during duplicateCertification");
+			}
+
+		});
+	});
+
 	$("#joinBtn").on("click", function() {
+		let loginId = $("#loginIdInput").val();
 		let email = $("#emailInput").val();
 		let password = $("#passwordInput").val();
 		let name = $("#nameInput").val();
-		let username = $("#usernameInput").val();
 
-		if (email === "") {
-			alert("Please Check your email");
+		if (!loginId || !email || !password || !name) {
+			alert("All fields are required.");
+			return;
+		}
+		
+		if (!checkDuplicate) {
+			alert("Please Check your ID");
 			return;
 		}
 
-		if (password === "") {
-			alert("Please Check your password");
+		if (isDuplicateloginId) {
+			alert("This ID is already taken.");
 			return;
 		}
-
-		if (name === "") {
-			alert("Please Check your name");
-			return;
-		}
-
-		if (username === "") {
-			alert("Please Check your username");
-			return;
-		}
-
+		
 		$.ajax({
 			type : "POST",
 			url : "/user/join",
 			data : {
+				loginId : loginId,
 				email : email,
 				password : password,
-				name : name,
-				username : username
+				name : name
 			},
 			success : function(response) {
 				if (response.result === "success") {
-					
 					location.href = "/user/login/view";
-					
 				} else {
-					
 					alert("Join Failed!");
-					
 				}
-				
 			},
 			error : function() {
-				
 				alert("Error Code 500");
-				
 			}
-			
 		});
-		
 	});
 </script>
 </html>

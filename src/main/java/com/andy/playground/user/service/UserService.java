@@ -2,6 +2,7 @@ package com.andy.playground.user.service;
 
 import org.springframework.stereotype.Service;
 
+import com.andy.playground.user.domain.User;
 import com.andy.playground.user.repository.UserRepository;
 
 import common.MD5HashingEncoder;
@@ -17,11 +18,12 @@ public class UserService {
 
 	}
 
-	public boolean addUser(String email, String password, String name, String username) {
+	// 1. 회원가입
+	public boolean addUser(String loginId, String password, String name, String email) {
 
 		String hasgingPassword = MD5HashingEncoder.encode(password);
 
-		int count = userRepository.insertUser(email, hasgingPassword, name, username);
+		int count = userRepository.insertUser(loginId, hasgingPassword, name, email);
 
 		if (count == 1) {
 
@@ -35,4 +37,24 @@ public class UserService {
 
 	}
 
+	// 2. 중복확인
+	public boolean isDuplicateId(String loginId) {
+
+		int count = userRepository.selectCountByloginId(loginId);
+		if (count == 0) {
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+
+	// 3. login
+	public User getUser(String loginId, String password) {
+
+		String hashingPassword = MD5HashingEncoder.encode(password);
+
+		return userRepository.selectUser(loginId, hashingPassword);
+
+	}
 }

@@ -3,6 +3,9 @@ package com.andy.playground.user;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 @RequestMapping("/user")
 @Controller
 public class UserController {
@@ -14,13 +17,6 @@ public class UserController {
 		
 	}  //post
 	
-	@GetMapping("/duplicate-id")
-	public String duplicateIdInput() {
-		
-		return "user/duplicate";
-		
-	}
-	
 	@GetMapping("/login/view")
 	public String loginInput() {
 		
@@ -28,11 +24,16 @@ public class UserController {
 		
 	}  //post
 	
-	@GetMapping("/post/create")
-	public String createTimeline() {
-		
-		return "user/timeline";
-		
-	}  //post
+	@GetMapping("/logout")
+	public String logout(HttpServletRequest request) {
+
+		HttpSession session = request.getSession();
+
+		session.removeAttribute("userId");
+		session.removeAttribute("userName");
+
+		return "redirect:/user/login/view";
+
+	}
 	
 }

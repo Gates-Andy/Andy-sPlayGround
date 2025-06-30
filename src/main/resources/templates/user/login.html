@@ -19,13 +19,13 @@
 			</header>
 
 			<section class="contents text-center">
-				<div>username</div>
-				<input type="text" class="form-control mb-1" placeholder="username">
+				<div>loginId</div>
+				<input type="text" class="form-control mb-1" id="loginIdInput" placeholder="loginId">
 
 				<div>password</div>
-				<input type="password" class="form-control mb-1" placeholder="password"><br>
+				<input type="password" class="form-control mb-1" id="passwordInput" placeholder="password"><br>
 
-				<button type="button" class="form-control btn btn-danger mb-3">Join now</button>
+				<button type="button" class="form-control btn btn-danger mb-3"  id="loginBtn" >Join now</button>
 
 				<div class="text-center mt-4">
 					<a href="/user/join/view">Create Account</a>
@@ -42,5 +42,42 @@
 		</div>
 
 	</div>
-
+	<script layout:fragment="script">
+	
+		$("#loginBtn").on("click",function(){
+			let loginId = $("#loginIdInput").val();
+			let password = $("#passwordInput").val();
+			
+			if (loginId == ""){
+				alert("아이디를 입력하세요");
+				return;
+			}
+			
+			if (password == ""){
+				alert("비밀번호를 확인 하세요");
+				return;
+			}
+			
+			$.ajax({
+				type : "post"
+				, url : "/user/login"
+				, data : {
+					"loginId" : loginId,
+					"password" : password
+				},
+				success : function(response){
+					if(response.result == "success"){
+						location.href = "/post/timeline"
+					} else {
+						alert("아이디, 비밀번호를 확인해 주세요");
+					}
+				},
+				error : function(response){
+					alert("로그인 에러");
+				}
+				
+			});
+			
+		});
+	</script>
 </html>
