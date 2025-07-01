@@ -51,8 +51,10 @@ public class UserRestController {
 
 	// 2.로그인
 	@PostMapping("/login")
-	public Map<String, String> login(@RequestParam("loginId") String loginId, @RequestParam("password") String password,
-			HttpServletRequest request) {
+	public Map<String, String> login(
+			@RequestParam("loginId") String loginId
+			, @RequestParam("password") String password
+			, HttpServletRequest request) {
 		Map<String, String> resultMap = new HashMap<>();
 		User user = userService.getUser(loginId, password);
 		if (user != null) {
