@@ -6,23 +6,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
 @RequestMapping("/user")
 @Controller
 public class UserController {
 	
 	@GetMapping("/join/view")
 	public String joinInput() {
-		
 		return "user/join";
-		
-	}  //post
+	}
 	
 	@GetMapping("/login/view")
 	public String loginInput() {
-		
 		return "user/login";
-		
-	}  //post
+	} 
 	
 	@GetMapping("/logout")
 	public String logout(HttpServletRequest request) {

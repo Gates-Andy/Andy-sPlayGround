@@ -1,17 +1,59 @@
 package com.andy.playground.post;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.andy.playground.post.domain.Post;
+import com.andy.playground.post.service.PostService;
+
+import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/post")
 @Controller
 public class PostController {
+	
+	private PostService postService;
 
-	@GetMapping("/timeline")
+	public PostController(PostService postService) {
+		this.postService = postService;
+	}
+	
+	@GetMapping("/timeline/view")
 	public String postList() {
-
 		return "post/timeline";
+	}
+	
+	@GetMapping("/create/view")
+	public String inputPost() {
+		return "post/input";
+	}
+	
+	@GetMapping("/list/view")
+	public String postList(
+			HttpSession session
+			, Model model) {
+		Object userIdObj = session.getAttribute("userId");
+		if (userIdObj == null) {
+			return "redirect:/user/login/view";
+		}
+		long userId = (long) session.getAttribute("userId");
+		List<Post> snslist = postService.getPostList(userId);
+		model.addAttribute("snsList", snslist);
+		return "post/timeline";
+	}
+	
+	@GetMapping("/detail/view")
+	public String postDetail(
+			@RequestParam("id") long id, Model model) {
+		Post post = postService.getPost(id);
+		model.addAttribute("sns", post);
+		return "post/detail";
 
 	}
+	
 }
