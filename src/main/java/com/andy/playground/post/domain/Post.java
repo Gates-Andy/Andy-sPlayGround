@@ -31,7 +31,7 @@ public class Post {
 	private String title;
 	private String contents;
 	private String imagePath;
-	private String location;
+	private String place;
 	
 	@CreationTimestamp
 	private LocalDateTime createdAt;

@@ -24,10 +24,10 @@
 			</div>
 			
 			<div class="form-group icon-label">
-				<img src="https://img.icons8.com/ios-filled/50/000000/map.png" /> <span>Location</span>
+				<img src="https://img.icons8.com/ios-filled/50/000000/map.png" /> <span>Place</span>
 			</div>
 			
-			<textarea class="form-control" rows="2" id="locationInput" placeholder="Mike's cabin mapo sogyo-dong, 358-110 · seoul"></textarea>
+			<textarea class="form-control" rows="2" id="placeInput" placeholder="Mike's cabin mapo sogyo-dong, 358-110 · seoul"></textarea>
 			
 			
 			<!-- 
@@ -62,7 +62,7 @@
 
 			let title = $("#titleInput").val();
 			let contents = $("#contentsInput").val();
-			let location = $("#locationInput").val();
+			let place = $("#placeInput").val();
 			let file = $("#fileInput")[0].files[0];
 			
 			if (title == "") {
@@ -75,15 +75,15 @@
 				return;
 			}
 			
-			if (location == "") {
-				alert("Please Type the location");
+			if (place == "") {
+				alert("Please Type the place");
 				return;
 			}
 			
 			let formData = new FormData();
 			formData.append("title", title);
 			formData.append("contents", contents);
-			formData.append("location", location);
+			formData.append("place", place);
 			formData.append("imageFile", file);
 
 			$.ajax({

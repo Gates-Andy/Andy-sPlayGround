@@ -56,7 +56,9 @@ public class PostController {
 
 
 	@GetMapping("/detail/view")
-	public String postDetail(@RequestParam("id") long id, Model model) {
+	public String postDetail(
+			@RequestParam("id") long id
+			, Model model) {
 		Post post = postService.getPost(id);
 		model.addAttribute("post", post);
 		return "post/detail";

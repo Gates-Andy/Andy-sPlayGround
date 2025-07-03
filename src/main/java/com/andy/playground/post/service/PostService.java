@@ -25,8 +25,7 @@ public class PostService {
 		return postlist;
 	}
 
-	public boolean addPost(long loginId, String title, String contents, String location,
-			MultipartFile file) {
+	public boolean addPost(long loginId, String title, String contents, String place, MultipartFile file) {
 
 		String imagePath = FileManager.saveFile(loginId, file);
 
@@ -34,8 +33,7 @@ public class PostService {
 			return false;
 		}
 
-		Post post = Post.builder().loginid(loginId).title(title).contents(contents).imagePath(imagePath)
-				.location(location).build();
+		Post post = Post.builder().loginid(loginId).title(title).contents(contents).imagePath(imagePath).place(place).build();
 
 		try {
 			postRepository.save(post);
