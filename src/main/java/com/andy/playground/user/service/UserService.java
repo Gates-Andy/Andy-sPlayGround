@@ -62,4 +62,10 @@ public class UserService {
 		return userRepository.selectUser(loginId, hashingPassword);
 
 	}
+	
+	// 4. 프라이머리키로 조회
+		public User getUserById(long Id) {
+			return userRepository.selectUserById(Id);
+		}
+		
 }

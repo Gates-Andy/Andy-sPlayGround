@@ -50,4 +50,20 @@
 		AND
 		`password`= #{password}
 	</select>
+	
+		<select id="selectUserById" parameterType="Long"
+		resultType="com.andy.playground.user.domain.User">
+		SELECT
+		`id`
+		,`loginId`
+		,`email`
+		,`password`
+		,`name`
+		,`createdAt`
+		,`updatedAt`
+		FROM
+		`user`
+		WHERE
+		`id` = #{id}
+	</select>
 </mapper>

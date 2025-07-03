@@ -22,4 +22,7 @@ public interface UserRepository {
 	public User selectUser(
 			@Param("loginId") String loginId
 			, @Param("password") String password);
+	
+	//4. 마이바티스 기반 프라이머리키로 유저 찾아오기 post 서비스 에서 사용할거라서 여기까지옴
+		public User selectUserById(@Param("id") long id);
 }
