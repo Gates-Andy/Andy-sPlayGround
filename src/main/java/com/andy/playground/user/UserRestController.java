@@ -26,14 +26,11 @@ public class UserRestController {
 
 	// 1.회원가입
 	@PostMapping("/join")
-	public Map<String, String> join(
-			@RequestParam("loginId") String loginId
-			, @RequestParam("password") String password,
-			@RequestParam("name") String name
-			, @RequestParam("email") String email) {
-		
+	public Map<String, String> join(@RequestParam("loginId") String loginId, @RequestParam("password") String password,
+			@RequestParam("name") String name, @RequestParam("email") String email) {
+
 		Map<String, String> resultMap = new HashMap<>();
-		
+
 		if (userService.addUser(loginId, password, name, email)) {
 			resultMap.put("result", "success");
 		} else {
@@ -44,11 +41,10 @@ public class UserRestController {
 
 	// 2. 중복확인
 	@GetMapping("/duplicate-id")
-	public Map<String, Boolean> isDuplicateId(
-			@RequestParam("loginId") String loginId) {
-		
+	public Map<String, Boolean> isDuplicateId(@RequestParam("loginId") String loginId) {
+
 		Map<String, Boolean> resultMap = new HashMap<>();
-		
+
 		if (userService.isDuplicateId(loginId)) {
 			resultMap.put("isDuplicate", true);
 		} else {
@@ -61,27 +57,30 @@ public class UserRestController {
 	@PostMapping("/login")
 	public Map<String, String> login(
 			@RequestParam("loginId") String loginId
-			, @RequestParam("password") String password
-			, HttpServletRequest request) {
-		
+			, @RequestParam("password") String password,
+			HttpServletRequest request) {
+
 		Map<String, String> resultMap = new HashMap<>();
-		
+
 		User user = userService.getUser(loginId, password);
-		
+
 		if (user != null) {
+			
 			resultMap.put("result", "success");
-			
+
 			HttpSession session = request.getSession();
-			
+
 			session.setAttribute("userId", user.getId());
-			session.setAttribute("userName", user.getloginId()); // 로그인 한 사람의 정보를 얻어 저장한다.(이 과정이 있어야 나중에 사용 할 수 있음)
-		} else {
-			resultMap.put("result", "fail");
+			session.setAttribute("userName", user.getName());
 			
+		} else {
+
+			resultMap.put("result", "fail");
+
 		}
-		
+
 		return resultMap;
-		
+
 	}
-	
+
 }

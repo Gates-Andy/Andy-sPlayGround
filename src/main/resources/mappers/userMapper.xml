@@ -34,8 +34,7 @@
 		`loginId` = #{loginId}
 	</select>
 
-	<select id="selectUser" parameterType="map"
-		resultType="com.andy.playground.user.domain.User">
+	<select id="selectUser" parameterType="map" resultType="com.andy.playground.user.domain.User">
 		SELECT
 		`id`
 		,`loginId`
@@ -47,12 +46,8 @@
 		FROM
 		`user`
 		WHERE
-		`loginId` 
-		= 
-		#{loginId}
+		`loginId`= #{loginId}
 		AND
-		`password` 
-		=
-		#{password}
+		`password`= #{password}
 	</select>
 </mapper>

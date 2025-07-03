@@ -27,10 +27,12 @@ public class Post {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
-	private long userId;
+	private long loginid;
 	private String title;
 	private String contents;
 	private String imagePath;
+	private String location;
+	private String meetingTime;
 	
 	@CreationTimestamp
 	private LocalDateTime createdAt;

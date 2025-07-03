@@ -8,6 +8,6 @@ import com.andy.playground.post.domain.Post;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 	
-	public List<Post> findByUserIdOrderByIdDesc(long userId);
+	public List<Post> findByloginidOrderByIdDesc(long loginid);
 	
 }

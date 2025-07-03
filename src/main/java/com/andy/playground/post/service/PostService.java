@@ -15,31 +15,28 @@ import jakarta.persistence.PersistenceException;
 @Service
 public class PostService {
 	private final PostRepository postRepository;
-	
+
 	public PostService(PostRepository postRepostory) {
-		this.postRepository = postRepostory; 
+		this.postRepository = postRepostory;
 	}
-	
-	public List<Post> getPostList(long userId) {
-		List<Post> postlist = postRepository.findByUserIdOrderByIdDesc(userId);
+
+	public List<Post> getPostList(long loginId) {
+		List<Post> postlist = postRepository.findByloginidOrderByIdDesc(loginId);
 		return postlist;
 	}
-	
-	public boolean addPost(
-			long userId
-			, String title
-			, String contents
-			, MultipartFile file) {
-		
-		String imagePath = FileManager.saveFile(userId, file);
-		
-		Post post = Post.builder()
-				.userId(userId)
-				.title(title)
-				.contents(contents)
-				.imagePath(imagePath)
-				.build();
-		
+
+	public boolean addPost(long loginId, String title, String contents, String location,
+			MultipartFile file) {
+
+		String imagePath = FileManager.saveFile(loginId, file);
+
+		if (imagePath == null) {
+			return false;
+		}
+
+		Post post = Post.builder().loginid(loginId).title(title).contents(contents).imagePath(imagePath)
+				.location(location).build();
+
 		try {
 			postRepository.save(post);
 		} catch (PersistenceException e) {
@@ -48,18 +45,18 @@ public class PostService {
 		return true;
 
 	}
-	
+
 	public Post getPost(long id) {
 		Optional<Post> optionalPost = postRepository.findById(id);
-		
-		if(optionalPost.isPresent()) {
-			
+
+		if (optionalPost.isPresent()) {
+
 			return optionalPost.get();
-			
+
 		} else {
-			
+
 			return null;
-			
+
 		}
 	}
 }

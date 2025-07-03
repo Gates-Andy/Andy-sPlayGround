@@ -19,11 +19,11 @@ public class User {
 		this.id = id;
 	}
 
-	public String getloginId() {
+	public String getLoginId() {
 		return loginId;
 	}
 
-	public void setloginId(String loginId) {
+	public void setLoginId(String loginId) {
 		this.loginId = loginId;
 	}
 

@@ -16,35 +16,30 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/post")
 @RestController
 public class PostRestController {
-	
+
 	private final PostService postService;
-	
+
 	public PostRestController(PostService postService) {
-		this.postService = postService; 
+		this.postService = postService;
 	}
-	
+
 	@PostMapping("/create")
 	public Map<String, String> createPost(
 			@RequestParam("title") String title
 			, @RequestParam("contents") String contents
-			, @RequestParam(value = "imageFile", required = false)  MultipartFile imageFile
+			, @RequestParam("location") String location
+			, @RequestParam("imageFile") MultipartFile imageFile
 			, HttpSession session) {
-		
-		long userId = (long)session.getAttribute("userId"); // setAttribute 는 Object
-		
-		Map<String,String> resultMap = new HashMap<>();
-		
-		if(postService.addPost(userId,title,contents,imageFile)) {
-			
+
+		long loginId = (long) session.getAttribute("loginId"); // setAttribute 는 Object
+
+		Map<String, String> resultMap = new HashMap<>();
+
+		if (postService.addPost(loginId, title, contents, location, imageFile)) {
 			resultMap.put("result", "success");
-			
 		} else {
-			
 			resultMap.put("result", "fail");
-			
 		}
-		
 		return resultMap;
-		
 	}
 }
