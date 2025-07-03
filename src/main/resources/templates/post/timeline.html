@@ -39,7 +39,7 @@
 
 			<div th:each="post : ${postList}" class="content d-flex justify-content-center align-items-center mb-5 border rounded p-4">
 				
-				<img class="mr-5" width="400" alt="Post Image" th:src="${}" />
+				<img class="mr-5" width="400" alt="Post Image" th:src="${post.imagePath != null} ? ${post.imagePath} : '/images/default.jpg'" />
 				
 				<div class="contents-area ml-5 w-50">
 				
@@ -54,17 +54,17 @@
 					
 					<p>
 						<strong>Where:</strong> 
-						<span th:text="${post.place}">Andy’s PlayGround</span>
+						<span th:text="${post.location}">Andy’s PlayGround</span>
 					</p>
 					
 					<p>
 						<strong>When:</strong> 
-						<span th:text="${post.date}">09.August.2025</span>
+						<span>09.August.2025</span>
 					</p>
 					
 					<p>
 						<strong>Details:</strong> 
-						<span th:text="${post.details}">Drinks are always welcome, B.Y.O.B.</span>
+						<span th:text="${post.contents}">Drinks are always welcome, B.Y.O.B.</span>
 					</p>
 
 					<button class="btn btn-secondary form-control mb-2">❤ Wanna Join</button>

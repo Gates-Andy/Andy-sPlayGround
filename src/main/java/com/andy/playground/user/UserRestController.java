@@ -26,8 +26,11 @@ public class UserRestController {
 
 	// 1.회원가입
 	@PostMapping("/join")
-	public Map<String, String> join(@RequestParam("loginId") String loginId, @RequestParam("password") String password,
-			@RequestParam("name") String name, @RequestParam("email") String email) {
+	public Map<String, String> join(
+			@RequestParam("loginId") String loginId
+			, @RequestParam("password") String password
+			, @RequestParam("name") String name
+			, @RequestParam("email") String email) {
 
 		Map<String, String> resultMap = new HashMap<>();
 
@@ -41,7 +44,8 @@ public class UserRestController {
 
 	// 2. 중복확인
 	@GetMapping("/duplicate-id")
-	public Map<String, Boolean> isDuplicateId(@RequestParam("loginId") String loginId) {
+	public Map<String, Boolean> isDuplicateId(
+			@RequestParam("loginId") String loginId) {
 
 		Map<String, Boolean> resultMap = new HashMap<>();
 

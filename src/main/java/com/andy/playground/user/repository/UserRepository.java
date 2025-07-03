@@ -15,7 +15,8 @@ public interface UserRepository {
 			, @Param("email") String email);
 	
 	// 2. 중복아이디체크시
-	public int selectCountByloginId(@Param("loginId") String loginId);
+	public int selectCountByloginId(
+			@Param("loginId") String loginId);
 	
 	// 3. 로그인시
 	public User selectUser(

@@ -24,7 +24,9 @@ public class PostController {
 	}
 
 	@GetMapping("/timeline/view")
-	public String postList(HttpSession session, Model model) {
+	public String postList(
+			HttpSession session
+			, Model model) {
 		
 		Object userIdObj = session.getAttribute("userId");
 		
@@ -44,9 +46,11 @@ public class PostController {
 
 	@GetMapping("/create/view")
 	public String inputPost(HttpSession session) {
-		if (session.getAttribute("loginId") == null) {
+		
+		if (session.getAttribute("userId") == null) {
 			return "redirect:/user/login/view";
 		}
+		
 		return "post/input";
 	}
 

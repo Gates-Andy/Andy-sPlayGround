@@ -39,7 +39,8 @@ public class UserService {
 	}
 
 	// 2. 중복확인
-	public boolean isDuplicateId(String loginId) {
+	public boolean isDuplicateId(
+			String loginId) {
 
 		int count = userRepository.selectCountByloginId(loginId);
 		
@@ -52,7 +53,9 @@ public class UserService {
 	}
 
 	// 3. login
-	public User getUser(String loginId, String password) {
+	public User getUser(
+			String loginId
+			, String password) {
 
 		String hashingPassword = MD5HashingEncoder.encode(password);
 

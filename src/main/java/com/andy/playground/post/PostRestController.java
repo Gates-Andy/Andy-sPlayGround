@@ -31,7 +31,7 @@ public class PostRestController {
 			, @RequestParam("imageFile") MultipartFile imageFile
 			, HttpSession session) {
 
-		long loginId = (long) session.getAttribute("loginId"); // setAttribute 는 Object
+		long loginId = (long) session.getAttribute("userId"); // setAttribute 는 Object
 
 		Map<String, String> resultMap = new HashMap<>();
 
