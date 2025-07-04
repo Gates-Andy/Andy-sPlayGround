@@ -3,93 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <title>Andy's Play Ground</title>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-	integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
-	crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/style2.css">
 </head>
 
 <body>
 	<div id="wrap">
-
+	
+		<!-- header -->
 		<header class="d-flex justify-content-between align-items-start px-4 py-3 ">
-		
-			<div class="logo-area display-3 text-danger">My Meet UP</div>
-			
+
+			<div class="logo-area display-3">My Meet UP</div>
+
 			<div class="logout-area d-flex flex-column align-items-end">
-			
+
 				<div th:if="${session.userId != null}">
 					<span th:text="${session.userName} + ' 님 환영합니다.'"></span>
 				</div>
-				
+
 				<a href="/user/logout">logout</a>
 				
 			</div>
-			
-		</header>
 
+		</header>
+		<!-- header -->
+		
 		<section class="main">
 
-			<div class="title-area display-4 text-danger text-center">MEET UP TIMELINE</div>
+			<div class="title-area display-4 text-center">MEET UP TIMELINE</div>
 
 			<div class="text-right mb-4">
-				<a href="/post/create/view" class="btn btn-make" >Create the Post</a>
+				<a href="/post/create/view" class="btn btn-make">Create the Post</a>
 			</div>
-
-			<div th:each="post : ${postList}" class="content d-flex justify-content-center align-items-center mb-5 border rounded p-4">
 			
-				<div class="font-weight-bold" th:text="${post.loginId}">userName</div>
+			<!-- 카드 -->
+			<div th:each="post : ${postList}" class="content d-flex justify-content-center align-items-center mb-5 border rounded p-4">
 				
-				<img class="mr-5" width="400" alt="Post Image" th:src="${post.imagePath != null} ? ${post.imagePath} : '/images/default.jpg'" />
-				
-				<div class="contents-area ml-5 w-50">
-				
+				<div class="flexbox flex-column">
+					<div class="userId font-weight-bold mb-3" th:text="${post.loginId}">userName</div>
+
+					<img class="mr-5 mt-1" width="500" alt="Post Image" th:src="${post.imagePath != null} ? ${post.imagePath} : '/images/default.jpg'" />
+				</div>
+
+				<div class="contents-area mt-3 ml-5 w-50">
+
 					<p>
-						<strong>Party Name:</strong> 
-						<span th:text="${post.title}">★ Andy’s Drink Party ★</span>
-					</p>
-					
-					<p>
-						<strong>Contents:</strong>
-					</p>
-					
-					<p>
-						<strong>Where:</strong> 
-						<span th:text="${post.place}">Andy’s PlayGround</span>
-					</p>
-					
-					<p>
-						<strong>When:</strong> 
-						<span>09.August.2025</span>
-					</p>
-					
-					<p>
-						<strong>Details:</strong> 
-						<span th:text="${post.contents}">Drinks are always welcome, B.Y.O.B.</span>
+						<strong>Party Name:</strong> <span th:text="${post.title}">★
+							Andy’s Drink Party ★</span>
 					</p>
 
-					<button class="btn btn-secondary form-control mb-2">❤ Wanna Join</button>
-					
-					<p> 30 people like this meet up group</p>
+					<p>
+						<strong th:text="${post.contents}">Contents:</strong>
+					</p>
 
-					<button class="btn btn-secondary form-control mb-2">☰ Message To the Householder</button>
-					
-					<p> userId1 : so nice place I wanna join...</p>
+					<p>
+						<strong>Where:</strong> <span th:text="${post.place}">Andy’s
+							PlayGround</span>
+					</p>
+
+					<p>
+						<strong>When:</strong> <span>09.August.2025</span>
+					</p>
+
+					<p>
+						<strong>Details:</strong> <span th:text="${post.contents}">Drinks
+							are always welcome, B.Y.O.B.</span>
+					</p>
+
+					<button class="btn btn-make form-control mb-2" id="likeBtn">❤ Wanna Join</button>
+
+					<p>30 people like this meet up group</p>
+
+					<button class="btn btn-make form-control mb-2">☰ Message
+						To the Householder</button>
+
+					<p>userId1 : so nice place I wanna join...</p>
 
 					<div class="d-flex justify-content-end">
 						<button class="btn btn-danger mt-3">Cancel (DELETE)</button>
 					</div>
-					
+				<!-- 카드 -->
 				</div>
 			</div>
-			
+
 		</section>
 
 		<footer class="d-flex justify-content-center align-items-center">
 			<div>Copyright 2025. Andy's Play Ground All rights reserved.</div>
 		</footer>
-		
+
 	</div>
+	
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+	<script>
+		$("likeBtn").on("click",function(){
+			$(this)
+		});
+	</script>
+	
 </body>
 </html>
+
+

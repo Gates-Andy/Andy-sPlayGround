@@ -8,13 +8,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.andy.playground.common.FileManager;
 import com.andy.playground.post.domain.Post;
 import com.andy.playground.post.dto.PostDto;
 import com.andy.playground.post.repository.PostRepository;
 import com.andy.playground.user.domain.User;
 import com.andy.playground.user.service.UserService;
 
-import common.FileManager;
 import jakarta.persistence.PersistenceException;
 
 @Service
@@ -60,7 +60,11 @@ public class PostService {
 			return false;
 		}
 
-		Post post = Post.builder().loginid(loginId).title(title).contents(contents).imagePath(imagePath).place(place)
+		Post post = Post.builder()
+				.loginid(loginId)
+				.title(title).contents(contents)
+				.imagePath(imagePath)
+				.place(place)
 				.build();
 
 		try {

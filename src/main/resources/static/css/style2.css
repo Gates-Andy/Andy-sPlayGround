@@ -10,58 +10,35 @@ header{
 	background-color: #f9b2b2;
 }
 
+.logo-area {
+	color: #e83e8c; /* 부트스트랩의 text-danger 와 동일 (빨간색) */
+}
+
+
+.logout-area span {
+	color: #ff80c0;
+	font-weight: bold;
+}
+
 body {
 	background-color: #fff;
 	font-family: 'Arial', sans-serif;
 }
 
+section{
+	
+}
 .main {
 	max-height: 85vh;
 	overflow-y: auto;
 }
 
-h1 {
-	background-color: #f9b2b2;
-	color: #ff5f5f;
-	font-weight: 700;
-	margin: 40px 0 20px;
-	text-align: center;
+.title-area {
+	color: #e83e8c; /* 핑크 계열로 강조 */
 }
 
-.form-container {
-	max-width: 800px;
-	margin: 0 auto;
-	padding: 20px;
-}
-
-.form-group label {
-	font-weight: 600;
-}
-
-.icon-label {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	font-weight: 600;
-	margin-top: 20px;
-}
-
-.icon-label img {
-	width: 30px;
-	height: 30px;
-}
-
-.upload-section {
-	margin-top: 20px;
-	display: flex;
-	align-items: center;
-	gap: 10px;
-}
-
-.upload-section .btn {
-	background-color: #f9b2b2;
-	color: #000;
-	font-weight: 600;
+.userId{
+	color: #e83e8c;
 }
 
 .btn-make {

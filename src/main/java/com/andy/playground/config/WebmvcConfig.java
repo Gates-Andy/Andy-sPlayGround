@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import common.FileManager;
+import com.andy.playground.common.FileManager;
 
 @Configuration
 public class WebmvcConfig implements WebMvcConfigurer {

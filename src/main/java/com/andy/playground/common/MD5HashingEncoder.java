@@ -1,4 +1,4 @@
-package common;
+package com.andy.playground.common;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
