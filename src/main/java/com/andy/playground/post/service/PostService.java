@@ -38,6 +38,7 @@ public class PostService {
 			User user = userService.getUserById(post.getLoginid());
 			
 			PostDto dto = PostDto.builder()
+					 .id(post.getId())
 	                .userId(post.getLoginid())
 	                .loginId(user.getLoginId())
 	                .title(post.getTitle())

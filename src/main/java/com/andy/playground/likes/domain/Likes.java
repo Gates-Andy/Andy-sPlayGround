@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "likes") // ❗️수정: "comments" → "likes"
+@Table(name = "`likes`")
 @Entity
 public class Likes {
 
