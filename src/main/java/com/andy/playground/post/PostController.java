@@ -18,50 +18,48 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class PostController {
 
-	private PostService postService;
+	private final PostService postService;
 
 	public PostController(PostService postService) {
 		this.postService = postService;
 	}
 
 	@GetMapping("/timeline/view")
-	public String postList(
-			HttpSession session
-			, Model model) {
-		
+	public String postList(HttpSession session, Model model) {
+
 		Object userIdObj = session.getAttribute("userId");
-		
+
 		if (userIdObj == null) {
 			return "redirect:/user/login/view";
 		}
-		
+
 		long userId = (long) session.getAttribute("userId");
-		
+
 		List<PostDto> postList = postService.getPostList();
-		
+
 		model.addAttribute("postList", postList);
-		
+
 		return "post/timeline";
-		
+
 	}
 
 	@GetMapping("/create/view")
 	public String inputPost(HttpSession session) {
-		
+
 		if (session.getAttribute("userId") == null) {
 			return "redirect:/user/login/view";
 		}
-		
+
 		return "post/input";
 	}
 
-
 	@GetMapping("/detail/view")
-	public String postDetail(
-			@RequestParam("id") long id
-			, Model model) {
+	public String postDetail(@RequestParam("id") long id, Model model) {
+
 		Post post = postService.getPost(id);
+
 		model.addAttribute("post", post);
+
 		return "post/detail";
 
 	}

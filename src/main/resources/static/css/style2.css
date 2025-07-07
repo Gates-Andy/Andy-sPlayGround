@@ -25,16 +25,13 @@ body {
 	font-family: 'Arial', sans-serif;
 }
 
-section{
-	
-}
 .main {
 	max-height: 85vh;
 	overflow-y: auto;
 }
 
 .title-area {
-	color: #e83e8c; /* 핑크 계열로 강조 */
+	color: #e83e8c; 
 }
 
 .userId{

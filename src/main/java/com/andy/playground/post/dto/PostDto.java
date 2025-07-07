@@ -1,5 +1,9 @@
 package com.andy.playground.post.dto;
 
+import java.util.List;
+
+import com.andy.playground.comments.dto.CommentDto;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,5 +18,9 @@ public class PostDto {
     private String contents;
     private String imagePath;
     private String place;
-   
+    
+    private long likeCount; 
+
+    private List<CommentDto> comments;
+    
 }

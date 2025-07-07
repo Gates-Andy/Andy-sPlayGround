@@ -16,19 +16,11 @@ public class UserService {
 	}
 
 	// 1. 회원가입
-	public boolean addUser(
-			String loginId
-			, String password
-			, String name
-			, String email) {
+	public boolean addUser(String loginId, String password, String name, String email) {
 
 		String hasgingPassword = MD5HashingEncoder.encode(password);
 
-		int count = userRepository.insertUser(
-				loginId
-				, hasgingPassword
-				, name
-				, email);
+		int count = userRepository.insertUser(loginId, hasgingPassword, name, email);
 
 		if (count == 1) {
 			return true;
@@ -38,11 +30,10 @@ public class UserService {
 	}
 
 	// 2. 중복확인
-	public boolean isDuplicateId(
-			String loginId) {
+	public boolean isDuplicateId(String loginId) {
 
 		int count = userRepository.selectCountByloginId(loginId);
-		
+
 		if (count == 0) {
 			return false;
 		} else {
@@ -52,19 +43,17 @@ public class UserService {
 	}
 
 	// 3. login
-	public User getUser(
-			String loginId
-			, String password) {
+	public User getUser(String loginId, String password) {
 
 		String hashingPassword = MD5HashingEncoder.encode(password);
 
 		return userRepository.selectUser(loginId, hashingPassword);
 
 	}
-	
+
 	// 4. 프라이머리키로 조회
-		public User getUserById(long Id) {
-			return userRepository.selectUserById(Id);
-		}
-		
+	public User getUserById(long Id) {
+		return userRepository.selectUserById(Id);
+	}
+
 }

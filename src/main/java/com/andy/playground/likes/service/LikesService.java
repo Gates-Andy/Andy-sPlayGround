@@ -16,14 +16,12 @@ public class LikesService {
 		this.likesRepository = likesRepository;
 	}
 
-	public boolean addLike(
-			long userId
-			, long postId) {
+	public boolean addLike(long loginId, long postId) {
 
 		Likes likes = Likes.builder()
-		.userId(userId)
-		.postId(postId)
-		.build();
+				.loginId(loginId)
+				.postId(postId)
+				.build();
 
 		try {
 			likesRepository.save(likes);
@@ -32,4 +30,5 @@ public class LikesService {
 		}
 		return true;
 	}
+	
 }

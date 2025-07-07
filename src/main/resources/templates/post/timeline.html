@@ -16,26 +16,18 @@
 		<!-- header -->
 		<header
 			class="d-flex justify-content-between align-items-start px-4 py-3 ">
-
 			<div class="logo-area display-3">My Meet UP</div>
-
 			<div class="logout-area d-flex flex-column align-items-end">
-
 				<div th:if="${session.userId != null}">
 					<span th:text="${session.userName} + ' 님 환영합니다.'"></span>
 				</div>
-
 				<a href="/user/logout">logout</a>
-
 			</div>
-
 		</header>
 		<!-- header -->
 
 		<section class="main">
-
 			<div class="title-area display-4 text-center">MEET UP TIMELINE</div>
-
 			<div class="text-right mb-4">
 				<a href="/post/create/view" class="btn btn-make">Create the Post</a>
 			</div>
@@ -46,13 +38,11 @@
 
 				<div class="flexbox flex-column">
 					<div class="userId font-weight-bold mb-3" th:text="${post.loginId}">userName</div>
-
 					<img class="mr-5 mt-1" width="500" alt="Post Image"
 						th:src="${post.imagePath != null} ? ${post.imagePath} : '/images/default.jpg'" />
 				</div>
 
 				<div class="contents-area mt-3 ml-5 w-50">
-
 					<p>
 						<strong>Party Name:</strong> <span th:text="${post.title}">★
 							Andy’s Drink Party ★</span>
@@ -79,25 +69,31 @@
 					<div>
 						<button class="heartIcon bi bi-heart text-danger"
 							th:data-post-id="${post.id}">❤ Wanna Join</button>
-						<p>30 people like this meet up group</p>
+						<p th:text="${post.likeCount} + ' people like this meet up group'"></p>
 						<!-- 반복되고있기에 id가 하나야함 class로 만들자-->
 						<!-- 데이터 속성 태그의 필요에 따라 쓴다? 서버에서 동작하는 코드 data-post-id="${post.id} -->
 					</div>
 
 					<div>
-						<input type="text" class="form-control col-10"
-							th:id="|commentInput${post.id}|">
-						<button class="comment-btn btn btn-make form-control mb-2"
+						<input type="text" class="form-control col-6"
+							th:id="|commentInput${post.id}|" name="text" />
+						<button class="comment-btn btn btn-make mt-2"
 							th:data-post-id="${post.id}">☰ Message To the
 							Householder</button>
-					</div>
 
-					<p>userId1 : so nice place I wanna join...</p>
+						<div th:each="comment : ${post.comments}">
+							<p>
+								<strong th:text="${comment.loginId}">작성자</strong> : <span th:text="${comment.text}">댓글 내용</span>
+							</p>
+						</div>
+
+					</div>
 
 					<div class="d-flex justify-content-end">
 						<button class="btn btn-danger mt-3">Cancel (DELETE)</button>
 					</div>
 					<!-- 카드 -->
+
 				</div>
 			</div>
 
@@ -109,7 +105,9 @@
 
 	</div>
 
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+		integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+		crossorigin="anonymous"></script>
 
 	<script>
 		$(".comment-btn").on("click", function() {
@@ -122,7 +120,7 @@
 				url : "/post/comment/create",
 				data : {
 					"postId" : postId,
-					"comment" : comment
+					"text" : comment
 				},
 				success : function(response) {
 					if (response.result == "success") {
@@ -162,5 +160,3 @@
 
 </body>
 </html>
-
-

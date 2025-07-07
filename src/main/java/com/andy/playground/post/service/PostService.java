@@ -8,7 +8,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.andy.playground.comments.dto.CommentDto;
+import com.andy.playground.comments.service.CommentService;
 import com.andy.playground.common.FileManager;
+import com.andy.playground.likes.repository.LikesRepository;
 import com.andy.playground.post.domain.Post;
 import com.andy.playground.post.dto.PostDto;
 import com.andy.playground.post.repository.PostRepository;
@@ -19,13 +22,17 @@ import jakarta.persistence.PersistenceException;
 
 @Service
 public class PostService {
-	private final PostRepository postRepository;
-	private final UserService userService;
+    private final PostRepository postRepository;
+    private final UserService userService;
+    private final LikesRepository likesRepository;
+    private final CommentService commentService;
 
-	public PostService(PostRepository postRepository, UserService userService) {
-		this.postRepository = postRepository;
-		this.userService = userService;
-	}
+    public PostService(PostRepository postRepository, UserService userService, LikesRepository likesRepository,  CommentService commentService) {
+        this.postRepository = postRepository;
+        this.userService = userService;
+        this.likesRepository = likesRepository;
+        this.commentService = commentService;
+    }
 
 	public List<PostDto> getPostList() {
 
@@ -36,17 +43,15 @@ public class PostService {
 		for (Post post : posts) {
 
 			User user = userService.getUserById(post.getLoginid());
+
+			int likeCount = likesRepository.countByPostId(post.getId());
 			
-			PostDto dto = PostDto.builder()
-					 .id(post.getId())
-	                .userId(post.getLoginid())
-	                .loginId(user.getLoginId())
-	                .title(post.getTitle())
-	                .contents(post.getContents())
-	                .imagePath(post.getImagePath())
-	                .place(post.getPlace())
-	                .build();
-			
+			List<CommentDto> comments = commentService.getCommentsByPostId(post.getId()); 
+
+			PostDto dto = PostDto.builder().id(post.getId()).userId(post.getLoginid()).loginId(user.getLoginId())
+					.title(post.getTitle()).contents(post.getContents()).imagePath(post.getImagePath())
+					.place(post.getPlace()).likeCount(likeCount).comments(comments).build();
+
 			dtoList.add(dto);
 		}
 
@@ -61,11 +66,7 @@ public class PostService {
 			return false;
 		}
 
-		Post post = Post.builder()
-				.loginid(loginId)
-				.title(title).contents(contents)
-				.imagePath(imagePath)
-				.place(place)
+		Post post = Post.builder().loginid(loginId).title(title).contents(contents).imagePath(imagePath).place(place)
 				.build();
 
 		try {

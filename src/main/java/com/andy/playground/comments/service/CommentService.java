@@ -1,8 +1,12 @@
 package com.andy.playground.comments.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.andy.playground.comments.domain.Comment;
+import com.andy.playground.comments.dto.CommentDto;
 import com.andy.playground.comments.repository.CommentRepository;
 
 import jakarta.persistence.PersistenceException;
@@ -11,24 +15,39 @@ import jakarta.persistence.PersistenceException;
 public class CommentService {
 
 	private final CommentRepository commentRepository;
-	//commentRepository는 데이터베이스와 직접 통신하는 DAO 역할이에요
+
+	// commentRepository는 데이터베이스와 직접 통신하는 DAO 역할이에요
 	// final은 생성자에서만 초기화 가능하고, 이후에는 값이 바뀌지 않도록 보장합니다.
 	// 이 필드는 아래 생성자를 통해 주입됩니다.
-	
+
 	public CommentService(CommentRepository commentRepository) {
 		this.commentRepository = commentRepository;
 	}
 	// 생성자 주입 방식입니다.
 	// 스프링이 CommentRepository 구현체를 자동으로 주입해줍니다.
 	// (예: @Autowired 없어도 생성자 1개면 스프링이 자동 주입합니다)
-	
-	public boolean addComment(long userId, long postId, String contents) {
 
-		Comment comment = Comment.builder()
-				.userId(userId)
-				.postId(postId)
-				.comment(contents)
-				.build();
+	public List<CommentDto> getCommentsByPostId(Long postId) {
+		
+		List<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtAsc(postId);
+		
+		List<CommentDto> commentDto = new ArrayList<>();
+
+		for (Comment comment : comments) {
+			
+			CommentDto dto = CommentDto.builder()
+					.userName(comment.getuserName())
+					.text(comment.getText())
+					.build();
+			commentDto.add(dto);
+		}
+
+		return commentDto;
+	}
+
+	public boolean addComment(long loginId, long postId, String text) {
+
+		Comment comment = Comment.builder().loginId(loginId).postId(postId).text(text).build();
 		// Builder 패턴을 이용해서 Comment 객체를 만듭니다.
 		// @Builder를 쓰면 new Comment(...) 방식보다 더 가독성 좋고, 필드 누락 실수 줄일 수 있어요.
 		// 이 부분이 실제로 "댓글을 하나 만든 것"입니다. 아직 DB에 저장은 안 됐어요.
@@ -44,7 +63,7 @@ public class CommentService {
 	// 여기서 문제가 생기면 (예: DB 연결 오류, 제약 조건 위반 등) 예외(Exception)가 발생합니다.
 	// 그 예외를 잡아서 false를 리턴하는 거예요.
 	// 즉, try-catch는 안전하게 실패를 처리하기 위한 목적입니다.
-	
+
 }
 
 //✅ 1. try-catch는 왜 쓰는가?

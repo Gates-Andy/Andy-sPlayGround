@@ -29,9 +29,9 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private long userId;
+    private long loginId;
     private long postId;
-    private String comment;
+    private String text;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
