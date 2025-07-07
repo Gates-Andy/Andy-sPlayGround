@@ -25,17 +25,13 @@ public class PostController {
 	}
 
 	@GetMapping("/timeline/view")
-	public String postList(HttpSession session, Model model) {
-
-		Object userIdObj = session.getAttribute("userId");
-
-		if (userIdObj == null) {
-			return "redirect:/user/login/view";
-		}
-
+	public String postList(
+			HttpSession session
+			, Model model) {
+			
 		long userId = (long) session.getAttribute("userId");
 
-		List<PostDto> postList = postService.getPostList();
+		List<PostDto> postList = postService.getPostList(userId);
 
 		model.addAttribute("postList", postList);
 

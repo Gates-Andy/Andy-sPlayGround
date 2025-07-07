@@ -1,12 +1,10 @@
 package com.andy.playground.comments.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.andy.playground.comments.domain.Comment;
-import com.andy.playground.comments.dto.CommentDto;
 import com.andy.playground.comments.repository.CommentRepository;
 
 import jakarta.persistence.PersistenceException;
@@ -27,24 +25,6 @@ public class CommentService {
 	// 스프링이 CommentRepository 구현체를 자동으로 주입해줍니다.
 	// (예: @Autowired 없어도 생성자 1개면 스프링이 자동 주입합니다)
 
-	public List<CommentDto> getCommentsByPostId(Long postId) {
-		
-		List<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtAsc(postId);
-		
-		List<CommentDto> commentDto = new ArrayList<>();
-
-		for (Comment comment : comments) {
-			
-			CommentDto dto = CommentDto.builder()
-					.userName(comment.getuserName())
-					.text(comment.getText())
-					.build();
-			commentDto.add(dto);
-		}
-
-		return commentDto;
-	}
-
 	public boolean addComment(long loginId, long postId, String text) {
 
 		Comment comment = Comment.builder().loginId(loginId).postId(postId).text(text).build();
@@ -64,6 +44,12 @@ public class CommentService {
 	// 그 예외를 잡아서 false를 리턴하는 거예요.
 	// 즉, try-catch는 안전하게 실패를 처리하기 위한 목적입니다.
 
+	public List<Comment> getCommentListByPostId(long postId) {
+		
+		return commentRepository.findByPostIdOrderByCreatedAtDesc(postId);
+		
+	}
+	
 }
 
 //✅ 1. try-catch는 왜 쓰는가?

@@ -8,10 +8,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.andy.playground.comments.dto.CommentDto;
+import com.andy.playground.comments.domain.Comment;
 import com.andy.playground.comments.service.CommentService;
 import com.andy.playground.common.FileManager;
-import com.andy.playground.likes.repository.LikesRepository;
+import com.andy.playground.likes.service.LikesService;
 import com.andy.playground.post.domain.Post;
 import com.andy.playground.post.dto.PostDto;
 import com.andy.playground.post.repository.PostRepository;
@@ -19,43 +19,65 @@ import com.andy.playground.user.domain.User;
 import com.andy.playground.user.service.UserService;
 
 import jakarta.persistence.PersistenceException;
-
+import lombok.RequiredArgsConstructor;
+@RequiredArgsConstructor //파이널만
 @Service
 public class PostService {
-    private final PostRepository postRepository;
+    private final PostRepository postRepository; // 필수적인 멤버변수 초기화가 필수 이때  lombok의 어노테이션 requiredArgsConstructor 객체 주입에 필요한 생성자만 전달받고싶을떄
     private final UserService userService;
-    private final LikesRepository likesRepository;
+    private final LikesService likesService;
     private final CommentService commentService;
-
-    public PostService(PostRepository postRepository, UserService userService, LikesRepository likesRepository,  CommentService commentService) {
+    
+    /* @RequiredArgsConstructor //파이널만 생성자를 만들어줌 그래서 쓸 필요 없음 lombok
+    public PostService(
+    		PostRepository postRepository
+    		, UserService userService
+    		,  LikesService likesService
+    		, CommentService commentService) {
         this.postRepository = postRepository;
         this.userService = userService;
-        this.likesRepository = likesRepository;
+        this.likesService = likesService ;
         this.commentService = commentService;
-    }
+    }*/
+    
+    // 세션에 로그인되어있는사람은 컨트롤러에서 밖에 못가져옴 즉 파라미터를 서비스에서 받아야함
+	public List<PostDto> getPostList(long userId) {
 
-	public List<PostDto> getPostList() {
+		List<Post> postList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 
-		List<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+		List<PostDto> postDtoList = new ArrayList<>();
 
-		List<PostDto> dtoList = new ArrayList<>();
-
-		for (Post post : posts) {
+		for (Post post : postList) {
 
 			User user = userService.getUserById(post.getLoginid());
 
-			int likeCount = likesRepository.countByPostId(post.getId());
+			int likeCount = likesService.likeCountByPostId(post.getId());
 			
-			List<CommentDto> comments = commentService.getCommentsByPostId(post.getId()); 
+			boolean isLike = likesService.isLikePostIdAndUserId(post.getId(), userId);
+			
+			List<Comment> commentList = commentService.getCommentListByPostId(post.getId()); 
+			
+			PostDto postDto = PostDto.builder()
+					
+					.id(post.getId())
+					.userId(post.getLoginid())
+					.loginId(user.getLoginId())
+					.title(post.getTitle())
+					.contents(post.getContents())
+					.imagePath(post.getImagePath())
+					.place(post.getPlace())
+					
+					.likeCount(likeCount)
+					.isLike(isLike)
+					
+					.commentList(commentList)
+					
+					.build();
 
-			PostDto dto = PostDto.builder().id(post.getId()).userId(post.getLoginid()).loginId(user.getLoginId())
-					.title(post.getTitle()).contents(post.getContents()).imagePath(post.getImagePath())
-					.place(post.getPlace()).likeCount(likeCount).comments(comments).build();
-
-			dtoList.add(dto);
+			postDtoList.add(postDto);
 		}
 
-		return dtoList;
+		return postDtoList;
 	}
 
 	public boolean addPost(long loginId, String title, String contents, String place, MultipartFile file) {
