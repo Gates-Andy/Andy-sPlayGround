@@ -24,9 +24,12 @@ public class PostRestController {
 	}
 
 	@PostMapping("/create")
-	public Map<String, String> createPost(@RequestParam("title") String title,
-			@RequestParam("contents") String contents, @RequestParam("place") String place,
-			@RequestParam("imageFile") MultipartFile imageFile, HttpSession session) {
+	public Map<String, String> createPost(
+			@RequestParam("title") String title,
+			@RequestParam("contents") String contents, 
+			@RequestParam("place") String place,
+			@RequestParam("imageFile") MultipartFile imageFile, 
+			HttpSession session) {
 
 		long loginId = (long) session.getAttribute("userId"); // setAttribute 는 Object
 
@@ -39,4 +42,5 @@ public class PostRestController {
 		}
 		return resultMap;
 	}
+	
 }

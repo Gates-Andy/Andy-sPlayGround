@@ -10,4 +10,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	
 	public List<Post> findByloginidOrderByIdDesc(long loginid);
 	
+	// DELETE FROM `comment` WHERE `postId` = 4;
+	public void deleteByPostId(long postId);
 }

@@ -2,7 +2,7 @@ package com.andy.playground.post.dto;
 
 import java.util.List;
 
-import com.andy.playground.comments.domain.Comment;
+import com.andy.playground.comments.dto.CommentDto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +23,6 @@ public class PostDto {
     private boolean isLike;
     
     // 댓글 목록
-    private List<Comment> commentList;
+    private List<CommentDto> commentList;
     
 }

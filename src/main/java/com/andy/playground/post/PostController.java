@@ -24,21 +24,6 @@ public class PostController {
 		this.postService = postService;
 	}
 
-	@GetMapping("/timeline/view")
-	public String postList(
-			HttpSession session
-			, Model model) {
-			
-		long userId = (long) session.getAttribute("userId");
-
-		List<PostDto> postList = postService.getPostList(userId);
-
-		model.addAttribute("postList", postList);
-
-		return "post/timeline";
-
-	}
-
 	@GetMapping("/create/view")
 	public String inputPost(HttpSession session) {
 
@@ -49,6 +34,20 @@ public class PostController {
 		return "post/input";
 	}
 
+	@GetMapping("/timeline/view")
+	public String postList(HttpSession session, Model model) {
+
+		long userId = (long) session.getAttribute("userId");
+
+		List<PostDto> postList = postService.getPostList(userId);
+
+		model.addAttribute("postList", postList);
+		model.addAttribute("loginUserId", userId);
+		
+		return "post/timeline";
+
+	}
+	
 	@GetMapping("/detail/view")
 	public String postDetail(@RequestParam("id") long id, Model model) {
 
