@@ -26,7 +26,7 @@ body {
 }
 
 .main {
-	max-height: 85vh;
+	max-height: 680px;
 	overflow-y: auto;
 }
 
@@ -42,12 +42,6 @@ body {
 	background-color: #f9b2b2;
 	font-weight: 600;
 	border: none;
-}
-
-.btn-quit {
-	background-color: #8b2b2b;
-	color: white;
-	font-weight: 600;
 }
 
 footer {

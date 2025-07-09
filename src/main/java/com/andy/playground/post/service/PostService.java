@@ -88,12 +88,57 @@ public class PostService {
 	}
 
 	public Post getPost(long id) {
+
 		Optional<Post> optionalPost = postRepository.findById(id);
+
 		if (optionalPost.isPresent()) {
+
 			return optionalPost.get();
+
 		} else {
+
 			return null;
+
 		}
 	}
 
+	public boolean updatePost(long id, long loginId, String title, String contents, String place, MultipartFile file) {
+
+		Optional<Post> optionalPost = postRepository.findById(id);
+		String imagePath = FileManager.saveFile(loginId, file);
+		if (imagePath == null) {
+			return false;
+		}
+		if (optionalPost.isPresent()) {
+
+			Post post = optionalPost.get();
+
+			Post updatedPost = post.toBuilder().title(title).contents(contents).place(place).imagePath(imagePath)
+					.build();
+
+			try {
+				postRepository.save(updatedPost);
+			} catch (PersistenceException e) {
+				return false;
+			}
+
+		} else {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean deletePost(long id) {
+		Optional<Post> optionalPost = postRepository.findById(id);
+
+		if (optionalPost.isPresent()) {
+			Post post = optionalPost.get();
+
+			postRepository.delete(post);
+
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

@@ -1,0 +1,84 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default}">
+	
+		<section layout:fragment="contents">
+		
+		<div class="form-container">
+		
+			<input type="hidden" id="postId" th:value="${post.id}"> <!-- postId 를 받아와야 몇번째 post인지 알수 있으며 js에서도 알려줘야함 -->
+			
+			<div class="form-group">
+				<label for="titleInput">TITLE</label> <input type="text"
+					class="form-control" id="titleInput" placeholder="Enter title">
+			</div>
+
+			<div class="form-group">
+				<label for="contentsInput">Contents</label>
+				<textarea class="form-control" rows="5" id="contentsInput"
+					placeholder="Tell your idea of today's meet up"></textarea>
+			</div>
+
+			<div class="form-group icon-label">
+				<img src="https://img.icons8.com/ios-filled/50/000000/map.png" /> <span></span>
+			</div>
+
+			<textarea class="form-control" rows="2" id="placeInput"
+				placeholder="Mike's cabin mapo sogyo-dong, 358-110 · seoul"></textarea>
+
+			<div class="upload-section">
+				<label class="btn"> ✓ UploadFile <input type="file" id="fileInput" hidden>
+				</label> <span id="fileName">image.png</span>
+			</div>
+
+			<div class="d-flex justify-content-between mt-4">
+				<a href="/post/timeline/view" class="btn btn-make">To The List</a>
+				<button class="btn btn-make" id="updateBtn">Edit</button>
+			</div>
+		</div>
+		</section>
+	
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<script>
+	$("#updateBtn").on("click", function () {
+	    let postId = $("#postId").val();
+	    let title = $("#titleInput").val();
+	    let contents = $("#contentsInput").val();
+	    let place = $("#placeInput").val();
+	    let file = $("#fileInput")[0].files[0];
+
+	    if (!title || !contents || !place) {
+	        alert("Please fill every inputs.");
+	        return;
+	    }
+
+	    let formData = new FormData();
+	    formData.append("id", postId); 
+	    formData.append("title", title);
+	    formData.append("contents", contents);
+	    formData.append("place", place);
+	    if (file) {
+	        formData.append("imageFile", file);
+	    }
+	    
+	    $.ajax({
+	        type: "put",
+	        url: "/post/update",
+	        data: formData,
+	        enctype: "multipart/form-data",
+	        processData: false, 
+	        contentType: false,  
+	        success: function(response) {
+	            if (response.result === "success") {
+	            	location.href = "/post/timeline/view";  
+	            } else {
+	                alert("Edit failed!");
+	            }
+	        },
+	        error: function() {
+	            alert("Edit Error!");
+	        }
+	    });
+	});
+	</script>
+	

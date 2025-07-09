@@ -43,20 +43,39 @@ public class PostController {
 
 		model.addAttribute("postList", postList);
 		model.addAttribute("loginUserId", userId);
-		
+
 		return "post/timeline";
 
 	}
-	
+
 	@GetMapping("/detail/view")
-	public String postDetail(@RequestParam("id") long id, Model model) {
+	public String postDetail(HttpSession session, Model model) {
 
-		Post post = postService.getPost(id);
+		if (session.getAttribute("userId") == null) {
+			return "redirect:/user/login/view";
+		}
+		
+		long userId = (long) session.getAttribute("userId");
 
-		model.addAttribute("post", post);
-
+		List<PostDto> postList = postService.getPostList(userId);
+		
+		model.addAttribute("postList", postList);
+		
 		return "post/detail";
 
 	}
-
+	
+	@GetMapping("/update/view")
+	public String updateView(
+	        @RequestParam("id") Long id
+	        , HttpSession session
+	        , Model model) {
+	    
+	    Post post = postService.getPost(id);
+	    
+	    model.addAttribute("post", post);
+	    
+	    return "post/update";
+	}
+	
 }
