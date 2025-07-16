@@ -1,4 +1,4 @@
-#spring.application.name=Memo
+#spring.application.name=andy'splayground
 #
 #spring.thymeleaf.cache=false
 
@@ -19,6 +19,6 @@ spring:
   thymeleaf: 
     cache: false
   application:
-    name: Memo
+    name: andy'splayground
 mybatis: 
   mapper-locations: mappers/*Mapper.xml
