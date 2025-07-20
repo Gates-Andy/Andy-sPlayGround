@@ -19,7 +19,8 @@
 		(
 		#{loginId}
 		, #{password}
-		, #{name}
+		,
+		#{name}
 		, #{email}
 		)
 	</insert>
@@ -34,7 +35,8 @@
 		`loginId` = #{loginId}
 	</select>
 
-	<select id="selectUser" parameterType="map" resultType="com.andy.playground.user.domain.User">
+	<select id="selectUser" parameterType="map"
+		resultType="com.andy.playground.user.domain.User">
 		SELECT
 		`id`
 		,`loginId`
@@ -48,10 +50,11 @@
 		WHERE
 		`loginId`= #{loginId}
 		AND
-		`password`= #{password}
+		`password`=
+		#{password}
 	</select>
-	
-		<select id="selectUserById" parameterType="Long"
+
+	<select id="selectUserById" parameterType="Long"
 		resultType="com.andy.playground.user.domain.User">
 		SELECT
 		`id`
