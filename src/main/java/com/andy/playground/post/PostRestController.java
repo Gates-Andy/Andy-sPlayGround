@@ -26,12 +26,9 @@ public class PostRestController {
 	}
 
 	@PostMapping("/create")
-	public Map<String, String> createPost(
-			@RequestParam("title") String title,
-			@RequestParam("contents") String contents, 
-			@RequestParam("place") String place,
-			@RequestParam("imageFile") MultipartFile imageFile, 
-			HttpSession session) {
+	public Map<String, String> createPost(@RequestParam("title") String title,
+			@RequestParam("contents") String contents, @RequestParam("place") String place,
+			@RequestParam("imageFile") MultipartFile imageFile, HttpSession session) {
 
 		long loginId = (long) session.getAttribute("userId"); // setAttribute 는 Object
 
@@ -44,18 +41,14 @@ public class PostRestController {
 		}
 		return resultMap;
 	}
-	
+
 	@PutMapping("/update")
-	public Map<String, String> updatePost(
-	        @RequestParam("id") Long postId,
-	        @RequestParam("title") String title,
-	        @RequestParam("contents") String contents, 
-	        @RequestParam("place") String place,
-	        @RequestParam(value="imageFile", required=false) MultipartFile imageFile, 
-	        HttpSession session) {
-		
+	public Map<String, String> updatePost(@RequestParam("id") Long postId, @RequestParam("title") String title,
+			@RequestParam("contents") String contents, @RequestParam("place") String place,
+			@RequestParam(value = "imageFile", required = false) MultipartFile imageFile, HttpSession session) {
+
 		Long loginId = (Long) session.getAttribute("userId");
-		
+
 		Map<String, String> resultMap = new HashMap<>();
 
 		if (postService.updatePost(postId, loginId, title, contents, place, imageFile)) {
@@ -65,16 +58,16 @@ public class PostRestController {
 		}
 		return resultMap;
 	}
-	
+
 	@DeleteMapping("/delete")
-	public Map<String, String> deletePost(@RequestParam("id") long id){
+	public Map<String, String> deletePost(@RequestParam("id") long id) {
 		Map<String, String> resultMap = new HashMap<>();
-		if(postService.deletePost(id)) {
+		if (postService.deletePost(id)) {
 			resultMap.put("result", "success");
 		} else {
 			resultMap.put("result", "fail");
 		}
 		return resultMap;
 	}
-	
+
 }

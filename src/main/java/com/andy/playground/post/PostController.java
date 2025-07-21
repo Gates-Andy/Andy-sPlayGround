@@ -23,17 +23,7 @@ public class PostController {
 	public PostController(PostService postService) {
 		this.postService = postService;
 	}
-
-	@GetMapping("/create/view")
-	public String inputPost(HttpSession session) {
-
-		if (session.getAttribute("userId") == null) {
-			return "redirect:/user/login/view";
-		}
-
-		return "post/input";
-	}
-
+	
 	@GetMapping("/timeline/view")
 	public String postList(HttpSession session, Model model) {
 
@@ -47,6 +37,16 @@ public class PostController {
 		return "post/timeline";
 
 	}
+	
+	@GetMapping("/create/view")
+	public String inputPost(HttpSession session) {
+
+		if (session.getAttribute("userId") == null) {
+			return "redirect:/user/login/view";
+		}
+
+		return "post/input";
+	}
 
 	@GetMapping("/detail/view")
 	public String postDetail(HttpSession session, Model model) {
@@ -54,28 +54,25 @@ public class PostController {
 		if (session.getAttribute("userId") == null) {
 			return "redirect:/user/login/view";
 		}
-		
+
 		long userId = (long) session.getAttribute("userId");
 
 		List<PostDto> postList = postService.getPostList(userId);
-		
+
 		model.addAttribute("postList", postList);
-		
+
 		return "post/detail";
 
 	}
-	
+
 	@GetMapping("/update/view")
-	public String updateView(
-	        @RequestParam("id") Long id
-	        , HttpSession session
-	        , Model model) {
-	    
-	    Post post = postService.getPost(id);
-	    
-	    model.addAttribute("post", post);
-	    
-	    return "post/update";
+	public String updateView(@RequestParam("id") Long id, HttpSession session, Model model) {
+
+		Post post = postService.getPost(id);
+
+		model.addAttribute("post", post);
+
+		return "post/update";
 	}
-	
+
 }
