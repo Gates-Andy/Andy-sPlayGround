@@ -19,8 +19,7 @@
 		(
 		#{loginId}
 		, #{password}
-		,
-		#{name}
+		, #{name}
 		, #{email}
 		)
 	</insert>
