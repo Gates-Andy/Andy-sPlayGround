@@ -57,10 +57,16 @@ public class PostService {
 
 			PostDto postDto = PostDto.builder()
 
-					.id(post.getId()).userId(post.getLoginid()).loginId(user.getLoginId()).title(post.getTitle())
-					.contents(post.getContents()).imagePath(post.getImagePath()).place(post.getPlace())
+					.id(post.getId())
+					.userId(post.getLoginid())
+					.loginId(user.getLoginId())
+					.title(post.getTitle())
+					.contents(post.getContents())
+					.imagePath(post.getImagePath())
+					.place(post.getPlace())
 
-					.likeCount(likeCount).isLike(isLike)
+					.likeCount(likeCount)
+					.isLike(isLike)
 
 					.commentList(commentList)
 

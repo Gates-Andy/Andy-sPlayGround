@@ -25,8 +25,10 @@ public class CommentRestController {
 	}
 
 	@PostMapping("/create")
-	public Map<String, String> createComment(@RequestParam("postId") long postId,
-			@RequestParam("text") String text, HttpSession session) {
+	public Map<String, String> createComment(
+			@RequestParam("postId") long postId,
+			@RequestParam("text") String text, 
+			HttpSession session) {
 
 		Object userIdObj = (Long) session.getAttribute("userId");
 		
