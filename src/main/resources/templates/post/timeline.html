@@ -11,138 +11,110 @@
 <body>
 	<div id="wrap">
 
-		<!-- header -->
-		<header
-			class="d-flex justify-content-between align-items-start px-4 py-3 ">
-			<div class="logo-area display-3">My Meet UP</div>
-			<div class="logout-area d-flex flex-column align-items-end">
-				<div th:if="${session.userId != null}">
-					<span th:text="'Welcome ' + ${session.userName} + ' !!!'"></span>
-				</div>
-				<a href="/post/detail/view" class="text-danger">My meet up</a>
-				<a href="/user/logout" class="text-danger">logout</a>
-			</div>
-		</header>
-		<!-- header -->
+		    <header class="d-flex justify-content-between align-items-start px-4 py-3">
+      <div class="logo-area display-4">My Meet UP</div>
+      <div class="logout-area d-flex flex-column align-items-end">
+        <div th:if="${session.userId != null}">
+          <span th:text="'Welcome ' + ${session.userName} + ' !!!'"></span>
+        </div>
+        <a href="/post/detail/view" class="text-danger">My meet up</a>
+        <a href="/user/logout" class="text-danger">Logout</a>
+      </div>
+    </header>
 
-		<section class="main">
-			<div class="title-area display-4 text-center">MEET UP TIMELINE</div>
-			<div class="text-right mb-4">
-				<a href="/post/create/view" class="btn btn-make">Create the Post</a>
-			</div>
+    <!-- Main Timeline Section -->
+    <section class="main">
+      <div class="title-area text-center display-4">MEET UP TIMELINE</div>
+      <div class="text-right mb-4">
+        <a href="/post/create/view" class="btn btn-make">Create the Post</a>
+      </div>
 
-			<!-- 카드 -->
-			<div th:each="post : ${postList}"
-				class="content d-flex justify-content-center align-items-center mb-5 border rounded p-4">
+      <!-- 카드 리스트 -->
+      <div th:each="post : ${postList}" class="content d-flex flex-wrap justify-content-between align-items-start mb-5">
+        <div class="flexbox flex-column">
+          <div class="userId mb-3" th:text="${post.loginId}">userName</div>
+          <img width="400" alt="Post Image" th:src="${post.imagePath != null} ? ${post.imagePath} : '/images/default.jpg'" />
+        </div>
 
-				<div class="flexbox flex-column">
-					<div class="userId font-weight-bold mb-3" th:text="${post.loginId}">userName</div>
-					<img class="mr-5 mt-1" width="500" alt="Post Image" th:src="${post.imagePath != null} ? ${post.imagePath} : '/images/default.jpg'" />
-				</div>
+        <div class="contents-area mt-3 ml-md-5 flex-grow-1">
+          <p><strong>Party Name:</strong> <span th:text="${post.title}">★ Andy’s Drink Party ★</span></p>
+          <p><strong>Contents:</strong> <span th:text="${post.contents}">내용</span></p>
+          <p><strong>Where:</strong> <span th:text="${post.place}">Andy’s PlayGround</span></p>
+          <p><strong>When:</strong> <span>09.August.2025</span></p>
 
-				<div class="contents-area mt-3 ml-5 w-50">
-					<p>
-						<strong>Party Name:</strong> 
-						<span th:text="${post.title}" id="titleInput">★ Andy’s Drink Party ★</span>
-					</p>
+          <div class="mb-2">
+            <i th:unless="${post.isLike}" class="bi bi-heart text-danger heartIcon" th:data-post-id="${post.id}"></i>
+            <i th:if="${post.isLike}" class="bi bi-heart-fill text-danger heartIcon" th:data-post-id="${post.id}"></i>
+            <span th:text="${post.likeCount} + ' people like this meet up group'"></span>
+          </div>
 
-					<p>
-						<strong th:text="${post.contents}" id="contentsInput">Contents:</strong>
-					</p>
+          <div>
+            <input type="text" class="form-control col-md-6" th:id="|commentInput${post.id}|" placeholder="Write a message" />
+            <button class="comment-btn btn btn-make" th:data-post-id="${post.id}">☰ Message To the Householder</button>
 
-					<p>
-						<strong>Where:</strong> 
-						<span th:text="${post.place}" id="placeInput">Andy’s PlayGround</span>
-					</p>
+            <div class="mt-2" th:each="comment : ${post.commentList}">
+              <p><strong th:text="${comment.loginId}"></strong>: <span th:text="${comment.text}"></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-					<p>
-						<strong>When:</strong> <span>09.August.2025</span>
-					</p>
+    <!-- Footer -->
+    <footer>
+      Copyright 2025. Andy's Play Ground All rights reserved.
+    </footer>
 
-					<div>
-						<!-- <span th:text="${post.isLike}"></span> 이젠필요없어 -->
-						<i th:unless="${post.isLike}" class="bi bi-heart text-danger heartIcon" th:data-post-id="${post.id}"></i> <i th:if="${post.isLike}" class="bi bi-heart-fill text-danger"></i>
+  </div>
 
-						<p th:text="${post.likeCount} + ' people like this meet up group'"></p>
-						<!-- 반복되고있기에 id가 하나야함 class로 만들자-->
-						<!-- 데이터 속성 태그의 필요에 따라 쓴다? 서버에서 동작하는 코드 data-post-id="${post.id} -->
-					</div>
+  <!-- JS -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    $(".comment-btn").on("click", function () {
+      let postId = $(this).data("post-id");
+      let comment = $("#commentInput" + postId).val();
 
-					<div>
-						<input type="text" class="form-control col-6" th:id="|commentInput${post.id}|" name="text" />
-						<button class="comment-btn btn btn-make mt-2" th:data-post-id="${post.id}">☰ Message To the Householder</button>
+      $.ajax({
+        type: "post",
+        url: "/post/comment/create",
+        data: {
+          "postId": postId,
+          "text": comment
+        },
+        success: function (response) {
+          if (response.result == "success") {
+            location.reload();
+          } else {
+            alert("comment write failed");
+          }
+        },
+        error: function () {
+          alert("comment write error!");
+        }
+      });
+    });
 
-						<div th:each="comment : ${post.commentList}">
-							<p>
-								<strong th:text="${comment.loginId}"></strong> : <span th:text="${comment.text}"></span>
-							</p>
-						</div>
+    $(".heartIcon").on("click", function () {
+      let postId = $(this).data("post-id");
 
-					</div>
-
-					<!-- 카드 -->
-
-				</div>
-			</div>
-
-		</section>
-
-		<footer class="d-flex justify-content-center align-items-center">
-			<div>Copyright 2025. Andy's Play Ground All rights reserved.</div>
-		</footer>
-
-	</div>
-
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-	<script>
-		$(".comment-btn").on("click", function() {
-			let postId = $(this).data("post-id");
-			// let comment = $(this).prev().val();
-			let comment = $("#commentInput" + postId).val();
-
-			$.ajax({
-				type : "post",
-				url : "/post/comment/create",
-				data : {
-					"postId" : postId,
-					"text" : comment
-				},
-				success : function(response) {
-					if (response.result == "success") {
-						location.reload();
-					} else {
-						alert("comment write success");
-					}
-				},
-				error : function() {
-					alert("comment write error!");
-				}
-			});
-		});
-
-		$(".heartIcon").on("click", function() {
-			let postId = $(this).data("post-id");
-
-			$.ajax({
-				type : "post",
-				url : "/post/like",
-				data : {
-					"postId" : postId
-				},
-				success : function(response) {
-					if (response.result == "success") {
-						location.reload();
-					} else {
-						alert("like fail");
-					}
-				},
-				error : function() {
-					alert("like error!");
-				}
-			});
-		});
-	</script>
-
+      $.ajax({
+        type: "post",
+        url: "/post/like",
+        data: {
+          "postId": postId
+        },
+        success: function (response) {
+          if (response.result == "success") {
+            location.reload();
+          } else {
+            alert("like fail");
+          }
+        },
+        error: function () {
+          alert("like error!");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
