@@ -23,9 +23,7 @@ public class LikesRestController {
 	}
 
 	@PostMapping("/like")
-	public Map<String, String> createLike(
-			@RequestParam("postId") long postId
-			, HttpSession session) {
+	public Map<String, String> createLike(@RequestParam("postId") long postId, HttpSession session) {
 
 		Map<String, String> resultMap = new HashMap<>();
 
