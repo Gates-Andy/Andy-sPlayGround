@@ -52,11 +52,9 @@
 						</p>
 
 						<div>
-							<i th:unless="${post.isLike}"
-								class="bi bi-heart text-danger heartIcon" th:data-post-id="${post.id}"></i> <i th:if="${post.isLike}"
-								class="bi bi-heart-fill text-danger"></i>
-							<p class="text-primary"
-								th:text="${post.likeCount} + ' people like this meet up group'"></p>
+							<i th:unless="${post.isLike}" class="bi bi-heart text-danger heartIcon" th:data-post-id="${post.id}"></i> 
+							<i th:if="${post.isLike}" class="bi bi-heart-fill text-danger"></i>
+							<p class="text-primary" th:text="${post.likeCount} + ' people like this meet up group'"></p>
 						</div>
 
 						<div>

@@ -35,7 +35,7 @@ public class LikesService {
 		return likesRepository.countByPostId(postId);
 	}
 	
-	// 특정 사용자가 특정 개사물에 좋아요를 눌렀는지
+	// 특정 사용자가 특정 개시물에 좋아요를 눌렀는지
 	public boolean isLikePostIdAndUserId(long postId, long loginId) {
 		return likesRepository.existsByPostIdAndLoginId(postId, loginId);
 	}
