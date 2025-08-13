@@ -15,8 +15,9 @@
 			<div th:if="${session.userId != null}">
 				<span th:text="'Welcome ' + ${session.userName} + ' !!!'"></span>
 			</div>
-			<a href="/post/timeline/view" class="text-danger">MeetUP</a> <a
-				href="/user/logout" class="text-danger">logout</a>
+			<a href="/post/timeline/view" class="text-danger">MeetUP</a> 
+			<a href="/user/logout" class="text-danger">logout</a>
+			
 		</div>
 	</header>
 </th:block>
